@@ -1,7 +1,8 @@
 (function(root){
   var _benches = [];
+  var CHANGE_EVENT = "change";
 
-  var resetBenches = function (benches) {
+  var _resetBenches = function (benches) {
     _benches = benches;
   };
 
@@ -10,11 +11,25 @@
       return _benches.slice(0);
     },
 
+    changed: function () {
+      this.emit(CHANGE_EVENT);
+    },
+
+    addChangeListener: function (callback) {
+      this.on(CHANGE_EVENT, callback);
+    },
+
+    removeChangeListener: function (callback) {
+      this.removeListener(CHANGE_EVENT, callback);
+    },
+
     dispatcherID: AppDispatcher.register(function(payload) {
       if (payload.actionType === BenchConstants.BENCHES_RECEIVED){
-        resetBenches(payload.benches);
+        _resetBenches(payload.benches);
+        BenchStore.changed();
       }
     })
   });
+
 
 })(this);
