@@ -1,4 +1,4 @@
 $(function() {
-  var bench_index = document.getElementById('content');
-  React.render(<Index/>, bench_index )
+  var root = document.getElementById('content');
+  React.render(<Search/>, root )
 })
