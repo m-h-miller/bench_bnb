@@ -5,7 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
 ActiveRecord::Base.transaction do
   benches = Bench.create!([
     {description: "Dangerous benches in middle of Houston -- risk takers only",

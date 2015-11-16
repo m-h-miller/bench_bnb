@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  */
+<<<<<<< HEAD
  * {
    border: 0;
    margin: 0;
@@ -123,3 +124,5 @@ button {
 button:hover {
   background: salmon;
 }
+=======
+>>>>>>> edc3548ed4ab3a0306e9d6ec7e1e38f4fd3a90ca
