@@ -4,7 +4,7 @@ class Api::BenchController < ApplicationController
   end
 
   def index
-    @bench = Bench.in_bounds(params[:bounds])
+    @bench = Bench.in_bounds(params[:bounds]).in_seating_range(params[:filterParams])
   end
 
   private

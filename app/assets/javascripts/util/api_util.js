@@ -1,10 +1,10 @@
 (function(){
   var ApiUtil = window.ApiUtil = {
-    fetchBenches: function (bounds) {
+    fetchBenches: function (bounds, filterParams) {
       $.ajax({
         url: 'api/bench',
         type: 'GET',
-        data: {bounds: bounds},
+        data: {bounds: bounds, filterParams: filterParams},
         dataType: 'json',
         success: function (data) {
           ApiActions.receiveAll(data);

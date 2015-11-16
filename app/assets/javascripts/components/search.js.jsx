@@ -8,14 +8,23 @@ var Search = React.createClass({
     this.setState({ activeBench: bench });
   },
 
-  clickHandler: function (coords) {
+  clickMapHandler: function (coords) {
     this.props.history.pushState(null, "benches/new", coords);
+  },
+
+  componentDidMount: function () {
+    FilterStore.addChangeListener(this._change);
+  },
+
+  _change: function(){
+    ApiUtil.fetchBenches(FilterStore.all());
   },
 
   render: function () {
     return(
       <div>
-        <Map clickHandler={ this.clickHandler } activeBench={ this.state.activeBench } />
+        <FilterParams />
+        <Map clickMapHandler={ this.clickMapHandler } activeBench={ this.state.activeBench } />
         <Index setActiveBench={ this.setActiveBench }/>
       </div>
     );

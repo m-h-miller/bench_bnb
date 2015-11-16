@@ -2,7 +2,7 @@ var Map = React.createClass({
 
   componentDidMount: function () {
     this.markers = [];
-    BenchStore.on("change", this._change);
+    BenchStore.addChangeListener(this._change);
     this.initializeMap();
   },
 
@@ -40,14 +40,15 @@ var Map = React.createClass({
     this.map.addListener('idle', function (e){
       var bounds = this.map.getBounds();
       bounds = this.formatBounds(bounds);
-      ApiUtil.fetchBenches(bounds);
+      var filterParams = FilterStore.all();
+      ApiUtil.fetchBenches(bounds, filterParams);
     }.bind(this));
 
     this.map.addListener("click", function (e){
       var lat = e.latLng.lat();
       var lng = e.latLng.lng();
       var coords = { lat: lat, lng: lng};
-      this.props.clickHandler(coords);
+      this.props.clickMapHandler(coords);
     }.bind(this));
   },
 
@@ -83,8 +84,8 @@ var Map = React.createClass({
       animation: google.maps.Animation.DROP,
     });
 
-    newMarker.addListener("mouseover", this.animateMarker.bind(this, newMarker));
-    newMarker.addListener("mouseout", this.pauseMarker.bind(this, newMarker));
+    newMarker.addListener("mouseover", this.animateMarker(newMarker));
+    newMarker.addListener("mouseout", this.pauseMarker(newMarker));
 
     return newMarker;
   },
