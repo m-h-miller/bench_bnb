@@ -9,7 +9,7 @@ var Search = React.createClass({
   },
 
   clickHandler: function (coords) {
-    this.props.history.pushState(null, "api/bench/new", coords);
+    this.props.history.pushState(null, "benches/new", coords);
   },
 
   render: function () {

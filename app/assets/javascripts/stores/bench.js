@@ -6,6 +6,10 @@
     _benches = benches;
   };
 
+  var addbench = function (bench) {
+    _benches.push(bench);
+  };
+
   root.BenchStore = $.extend({}, EventEmitter.prototype, {
     all: function(){
       return _benches.slice(0);
@@ -30,7 +34,10 @@
           _resetBenches(payload.benches);
           BenchStore.changed();
         break;
-
+      case BenchConstants.BENCH_CREATED:
+          addBench(payload.bench);
+          BenchStore.changed();
+        break;
       }
     })
   });

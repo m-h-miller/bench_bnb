@@ -12,7 +12,6 @@ var Index = React.createClass({
   },
 
   render: function() {
-    debugger
     return (
       <div>
         <ul className="search-locations">

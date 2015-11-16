@@ -32,8 +32,9 @@
  }
 
  #content {
-   background: #eee;
-   border: 5px solid black;
+   background: #fff;
+   border: 5px solid #fff;
+   border-radius: 5px;
    margin: auto;
    width: 800px;
  }
@@ -51,9 +52,17 @@ h1 {
   font-size: 36px;
   padding: 30px;
   color: salmon;
-  border: 5px solid black;
+  /*border: 5px solid grey;*/
+  background: #eee;
+  border-radius: 15px;
 }
 
+h3 {
+  font-weight: bold;
+  font-size: 24px;
+  padding: 20px;
+  color: salmon;
+}
 
 .index-item {
   display: block;
@@ -66,5 +75,51 @@ h1 {
 }
 
 .index-item.hovered {
+  background: salmon;
+}
+
+.bench-form {
+  width: 400px;
+  margin: auto;
+  background: #eee;
+  border: 5px solid white;
+  padding: 5px;
+  border-radius: 15px;
+}
+
+.bench-form label {
+  font-size: 15px;
+  font-weight: bold;
+  display: block;
+  padding: 10px;
+  width: 200px;
+  margin: 20px auto;
+  border: 3px outset grey;
+  border-radius: 5px;
+}
+
+.bench-form input, textarea {
+  margin: 5px auto;
+  border: 1px solid black;
+  text-align: left;
+  background: #fff;
+  padding: 10px;
+  font-weight: normal;
+  font-size: 12px;
+  display: block;
+}
+
+button {
+  margin: auto;
+  display: block;
+  border: 3px outset grey;
+  padding: 10px;
+  border-radius: 5px;
+  background: #ccc;
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
   background: salmon;
 }

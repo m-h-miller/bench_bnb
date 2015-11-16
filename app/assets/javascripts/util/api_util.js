@@ -10,7 +10,21 @@
           ApiActions.receiveAll(data);
         }
       });
-    }
-  };
+    },
 
+    createBench: function (bench) {
+      data = {bench: bench};
+      $.ajax({
+        url: 'api/bench',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function (bench) {
+          ApiActions.benchCreated(bench);
+        }
+      });
+    }
+
+
+  };
 })();
