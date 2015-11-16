@@ -1,42 +1,88 @@
 var Map = React.createClass({
 
   componentDidMount: function () {
+    this.markers = [];
+    BenchStore.on("change", this._change);
+    this.initializeMap();
+  },
+
+  initializeMap: function () {
     var map = React.findDOMNode(this.refs.map);
     var mapOptions = {
       center: {lat: 40.725321, lng: -73.996791},
       zoom: 13
     };
-    this.map = new google.maps.Map(map, mapOptions);
-    BenchStore.addChangeListener(this._placeMapMarkers);
 
-    this.map.addListener('idle', function (){
-      var LatLng = this.map.getBounds();
-      var NorthEast = LatLng.getNorthEast();
-      var SouthWest = LatLng.getSouthWest();
-      var bounds = {
-        northEast: { lat: NorthEast.lat(), lng: NorthEast.lng() },
-        southWest: { lat: SouthWest.lat(), lng: SouthWest.lng() }
-      };
+    this.map = new google.maps.Map(map, mapOptions);
+
+    this.map.addListener('idle', function (e){
+      var bounds = this.map.getBounds();
+      bounds = this.formatBounds(bounds);
       ApiUtil.fetchBenches(bounds);
     }.bind(this));
   },
 
-  _placeMapMarkers: function () {
-    BenchStore.all().map(function (bench) {
-      new google.maps.Marker({
-        position: { lat: bench.lat, lng: bench.lng },
-        map: this.map,
-        title: 'Hello World!'
-      });
-    }.bind(this));
+  formatBounds: function (bounds) {
+    var NorthEast = bounds.getNorthEast();
+    var SouthWest = bounds.getSouthWest();
+
+    return {
+      northEast: { lat: NorthEast.lat(), lng: NorthEast.lng() },
+      southWest: { lat: SouthWest.lat(), lng: SouthWest.lng() }
+    };
   },
 
+  _placeMapMarkers: function () {
+    var benches = BenchStore.all();
 
+    benches.forEach(function(bench){
+      this.markers.push(this.createBenchMarker(bench));
+    }, this);
+
+    this.markers.forEach(function(marker){
+      marker.setMap(this.map);
+    }, this);
+  },
+
+  createBenchMarker: function (bench) {
+    var LatLng = {lat: bench.lat, lng: bench.lng};
+    var map = this.refs.map;
+
+    var newMarker = new google.maps.Marker({
+      position: LatLng,
+      title: bench.description,
+      animation: google.maps.Animation.DROP,
+    });
+
+    newMarker.addListener("mouseover", this.animateMarker.bind(this, newMarker));
+    newMarker.addListener("mouseout", this.pauseMarker.bind(this, newMarker));
+
+    return newMarker;
+  },
+
+  removeMarkers: function () {
+    this.markers.forEach(function(marker){
+      marker.setMap(null);
+    });
+    this.markers = [];
+  },
+
+  animateMarker: function (marker) {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  },
+
+  pauseMarker: function (marker) {
+    marker.setAnimation(null);
+  },
+
+  _change: function () {
+    this.removeMarkers();
+    this._placeMapMarkers();
+  },
 
   render: function () {
     return(
-      <div className="map" ref="map">
-      </div>
+      <div className="map" ref="map"></div>
     );
   }
 });
