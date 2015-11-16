@@ -11,24 +11,18 @@ var Index = React.createClass({
     this.setState({benches: BenchStore.all()});
   },
 
-  render: function () {
-
+  render: function() {
+    debugger
     return (
-      <ul>
-        {
-          this.state.benches.map(function (bench) {
-            return (
-              <li key={bench.id}>
-                <strong>{bench.id}: {bench.description}</strong>
-                <ul>
-                  <li>Latitude: {bench.lat}</li>
-                  <li>Longitude: {bench.lng}</li>
-                </ul>
-              </li>
-            );
-          })
-        }
-      </ul>
+      <div>
+        <ul className="search-locations">
+          {
+            this.state.benches.map(function(bench){
+              return <IndexItem setActiveBench={this.props.setActiveBench} key={bench.id} bench={bench}/>;
+            }, this)
+          }
+        </ul>
+      </div>
     );
-  }
+  },
 });

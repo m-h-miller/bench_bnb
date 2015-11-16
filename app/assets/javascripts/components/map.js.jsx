@@ -6,6 +6,28 @@ var Map = React.createClass({
     this.initializeMap();
   },
 
+  componentWillReceiveProps: function(newProps) {
+    if (newProps.activeBench) {
+      var marker = this.findMarkerByDesc(newProps.activeBench.description);
+      this.animateMarker(marker);
+    } else {
+      this.markers.forEach(function(marker){
+        this.pauseMarker(marker);
+      }, this);
+    }
+  },
+
+  findMarkerByDesc: function (desc) {
+    var target;
+    this.markers.some(function(marker){
+      if (marker.title === desc ) {
+        target = marker;
+        return true;
+      }
+    });
+    return target;
+  },
+
   initializeMap: function () {
     var map = React.findDOMNode(this.refs.map);
     var mapOptions = {
@@ -19,6 +41,13 @@ var Map = React.createClass({
       var bounds = this.map.getBounds();
       bounds = this.formatBounds(bounds);
       ApiUtil.fetchBenches(bounds);
+    }.bind(this));
+
+    this.map.addListener("click", function (e){
+      var lat = e.latLng.lat();
+      var lng = e.latLng.lng();
+      var coords = { lat: lat, lng: lng};
+      this.props.clickHandler(coords);
     }.bind(this));
   },
 
